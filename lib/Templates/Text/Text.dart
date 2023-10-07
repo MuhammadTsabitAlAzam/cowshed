@@ -60,7 +60,7 @@ Widget LightThemedText(String title) => Text(
       title,
       style: TextStyle(
           // fontFamily: '',
-          fontSize: 10,
+          fontSize: 12,
           color: AppColors.myColor),
     );
 
@@ -86,4 +86,20 @@ Widget AppBarText(String title) => Text(
     // fontFamily: '',
       fontSize: 20,
       color: Colors.white, fontWeight: FontWeight.w400),
+);
+
+Widget UnderlineThemedText(String title) => Container(
+  decoration:  BoxDecoration(
+      border: Border(
+          bottom: BorderSide(color: AppColors.myColor))
+  ),
+  child:   Text(
+    title,
+    style: TextStyle(
+      // fontFamily: '',
+        fontSize: 15,
+        color: AppColors.myColor,
+        fontWeight: FontWeight.w500,
+    ),
+  ),
 );

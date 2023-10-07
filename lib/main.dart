@@ -1,10 +1,8 @@
 import 'package:cowshed/Screen/LandingScreen.dart';
-import 'package:cowshed/Screen/LoginScreen.dart';
-import 'package:cowshed/Screen/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

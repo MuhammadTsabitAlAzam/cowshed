@@ -2,7 +2,6 @@ import 'package:cowshed/Screen/LoginScreen.dart';
 import 'package:cowshed/Screen/RegisterScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LandingPage extends StatelessWidget {
   LandingPage({Key? key});

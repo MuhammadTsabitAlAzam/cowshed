@@ -1,5 +1,6 @@
 import 'package:cowshed/Screen/HasilScanScreen.dart';
 import 'package:cowshed/Screen/ProfileScreen.dart';
+import 'package:cowshed/Screen/ScanScreen.dart';
 import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -41,7 +42,7 @@ class BottomNavbar extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       HomeScreen(),
-      Container(),
+      ScanScreen(),
       HasilScanScreen(),
       ProfileScreen(),
     ];
