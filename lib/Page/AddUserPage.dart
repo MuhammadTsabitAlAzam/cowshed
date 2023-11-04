@@ -7,7 +7,9 @@ import 'package:cowshed/Templates/Textfield/Common.dart';
 import 'package:cowshed/Templates/Textfield/Password.dart';
 import 'package:cowshed/Templates/Textfield/PhoneNumber.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../Api/UserApi.dart';
+import '../Component/BottomNavbar.dart';
 import '../Models/UserModels.dart';
 import '../Templates/Dialog/CustomSnackbar.dart';
 
@@ -66,14 +68,10 @@ class _RegisterPageState extends State<AddUserPage> {
 
       final response = await apiService.registerUser(userToRegister);
       if (response.statusCode == 201) {
-        final responseData = json.decode(response.body);
-        final accessToken = responseData['access']['token'] as String;
-        final name = responseData['user']['name'] as String;
-        final role = responseData['user']['role'] as String;
-        await ApiServiceUser().saveUserData(name, accessToken, role);
-        Navigator.push(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(builder: (context) => ProfileScreen()),
+          screen: BottomNavbar(index: 3),
+          withNavBar: false,
         );
         showDialog(
           context: context,

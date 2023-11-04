@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:cowshed/Component/BottomNavbar.dart';
-import 'package:cowshed/Screen/HomeScreen.dart';
 import 'package:cowshed/Screen/LoginScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
 import 'package:cowshed/Templates/Dialog/NotifDialog.dart';
@@ -36,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
       name: RegisterPage._nama.text,
       address: RegisterPage._alamat.text,
       no_telp: RegisterPage._nomorHp.text,
+      role: 'user'
     );
 
     return user;

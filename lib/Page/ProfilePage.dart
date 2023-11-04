@@ -1,4 +1,5 @@
 import 'package:cowshed/Screen/AddUserScreen.dart';
+import 'package:cowshed/Screen/DaftarUserScreen.dart';
 import 'package:cowshed/Screen/EditProfileScreen.dart';
 import 'package:cowshed/Screen/TentangScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
@@ -109,6 +110,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   PersistentNavBarNavigator.pushNewScreen(
                     context,
                     screen: AddUserScreen(),
+                    withNavBar: false,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10,),
+            Visibility(
+              visible : role == "admin" ? true : false,
+              child: SuffixListTile(
+                prefixIcon: Icons.list_alt,
+                label: 'Daftar User',
+                suffixIcon: Icons.chevron_right_outlined,
+                onPressed: (){
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: DaftarUserScreen(),
                     withNavBar: false,
                   );
                 },
