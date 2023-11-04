@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:cowshed/Component/BottomNavbar.dart';
-import 'package:cowshed/Screen/HomeScreen.dart';
-import 'package:cowshed/Screen/LoginScreen.dart';
+import 'package:cowshed/Screen/ProfileScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
 import 'package:cowshed/Templates/Dialog/NotifDialog.dart';
 import 'package:cowshed/Templates/Text/Text.dart';
@@ -11,10 +9,9 @@ import 'package:cowshed/Templates/Textfield/PhoneNumber.dart';
 import 'package:flutter/material.dart';
 import '../Api/UserApi.dart';
 import '../Models/UserModels.dart';
-import '../Templates/Button/CustomTextButton.dart';
 import '../Templates/Dialog/CustomSnackbar.dart';
 
-class RegisterPage extends StatefulWidget {
+class AddUserPage extends StatefulWidget {
   static TextEditingController _nama = TextEditingController();
   static TextEditingController _username = TextEditingController();
   static TextEditingController _nomorHp = TextEditingController();
@@ -25,35 +22,44 @@ class RegisterPage extends StatefulWidget {
   static TextEditingController _lng = TextEditingController();
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<AddUserPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<AddUserPage> {
+  String _selectedRole = 'User';
   User createUserToRegister() {
     final User user = User(
-      username: RegisterPage._username.text,
-      password: RegisterPage._password.text,
-      name: RegisterPage._nama.text,
-      address: RegisterPage._alamat.text,
-      no_telp: RegisterPage._nomorHp.text,
+      username: AddUserPage._username.text,
+      password: AddUserPage._password.text,
+      name: AddUserPage._nama.text,
+      address: AddUserPage._alamat.text,
+      no_telp: AddUserPage._nomorHp.text,
+      role: _selectedRole,
     );
+
+    if (_selectedRole == 'Puskeswan') {
+      user.lat = double.parse(AddUserPage._lat.text);
+      user.lng = double.parse(AddUserPage._lng.text);
+    }
 
     return user;
   }
 
 
   Future<void> registerUser(BuildContext context) async {
-    if (RegisterPage._nama.text.isEmpty ||
-        RegisterPage._username.text.isEmpty ||
-        RegisterPage._nomorHp.text.isEmpty ||
-        RegisterPage._alamat.text.isEmpty ||
-        RegisterPage._password.text.isEmpty ||
-        RegisterPage._repassword.text.isEmpty 
+    if (AddUserPage._nama.text.isEmpty ||
+        AddUserPage._username.text.isEmpty ||
+        AddUserPage._nomorHp.text.isEmpty ||
+        AddUserPage._alamat.text.isEmpty ||
+        AddUserPage._password.text.isEmpty ||
+        AddUserPage._repassword.text.isEmpty ||
+        (_selectedRole == 'Puskeswan' && AddUserPage._lat.text.isEmpty) ||
+        (_selectedRole == 'Puskeswan' && AddUserPage._lng.text.isEmpty)
     )
     {
       CustomSnackbar.instance.show(context, "Semua field harus diisi");
     }
-    else if (RegisterPage._password.text == RegisterPage._repassword.text) {
+    else if (AddUserPage._password.text == AddUserPage._repassword.text) {
       final apiService = ApiServiceUser();
 
       final userToRegister = createUserToRegister();
@@ -67,14 +73,14 @@ class _RegisterPageState extends State<RegisterPage> {
         await ApiServiceUser().saveUserData(name, accessToken, role);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => BottomNavbar()),
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
         );
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return NotifDialog(
-              title: "Register Berhasil",
-              content: "Selamat Anda Berhasil Register",
+              title: "Tambah User Berhasil",
+              content: "Selamat Anda Berhasil Tambah User",
             );
           },
         );
@@ -87,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
           CustomSnackbar.instance.show(context, "Terjadi kesalahan server (HTTP 500)");
         }
       } else {
-        NotifDialog(title: 'Register Gagal', content: 'Register Gagal',);
+        NotifDialog(title: 'Tambah User Gagal', content: 'Tambah User Gagal',);
       }
     } else {
       CustomSnackbar.instance.show(context, "Password Anda Tidak Sama");
@@ -109,50 +115,64 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 181,
                   ),
                   SizedBox(height: 40,),
-                  TitleText('Register'),
+                  TitleText('Tambah User'),
                   SizedBox(height: 30,),
-                  CommonTextField(label: 'Nama Lengkap*', controller: RegisterPage._nama),
+                  CommonTextField(label: 'Nama Lengkap*', controller: AddUserPage._nama),
                   SizedBox(height: 15,),
-                  CommonTextField(label: 'Username*', controller: RegisterPage._username),
+                  CommonTextField(label: 'Username*', controller: AddUserPage._username),
                   SizedBox(height: 15,),
-                  PhoneNumberField(labelText: 'Nomor HP*', controller: RegisterPage._nomorHp),
+                  PhoneNumberField(labelText: 'Nomor HP*', controller: AddUserPage._nomorHp),
                   SizedBox(height: 15,),
-                  CommonTextField(label: 'Alamat*', controller: RegisterPage._alamat),
+                  CommonTextField(label: 'Alamat*', controller: AddUserPage._alamat),
                   SizedBox(height: 15,),
                   Row(
                     children: [
                       Container(
                         width: _width/2-30,
-                          child: PasswordField(controller: RegisterPage._password)
+                          child: PasswordField(controller: AddUserPage._password)
                       ),
                       SizedBox(width: 15,),
                       Container(
                           width: _width/2-30,
-                          child: PasswordField(controller: RegisterPage._repassword, label: 'Ulangi Password*',)
+                          child: PasswordField(controller: AddUserPage._repassword, label: 'Ulangi Password*',)
                       ),
                     ],
                   ),
+                  SizedBox(height: 15),
+                  DropdownButtonFormField<String>(
+                    value: _selectedRole,
+                    items: ['User', 'Puskeswan']
+                        .map((role) => DropdownMenuItem<String>(
+                      value: role,
+                      child: Text(role),
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedRole = value!;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Role',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                   SizedBox(height: 15,),
-                  CommonTextField(label: 'Latitude', controller: RegisterPage._lat),
+                  Visibility(
+                    visible: _selectedRole == 'Puskeswan',
+                    child: CommonTextField(label: 'Latitude*', controller: AddUserPage._lat),
+                  ),
                   SizedBox(height: 15,),
-                  CommonTextField(label: 'Longitude', controller: RegisterPage._lng),
+                  Visibility(
+                    visible: _selectedRole == 'Puskeswan',
+                    child: CommonTextField(label: 'Longitude*', controller: AddUserPage._lng),
+                  ),
                   SizedBox(height: 35,),
-                  DefaultButton(label: 'Register',  onPressed: () {
+                  DefaultButton(label: 'Tambah',  onPressed: () {
                     registerUser(context);
                   }),
                   SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Sudah Punya Akun?'),
-                      CustomTextButton(label: 'Login disini', onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                        );
-                      })
-                    ],
-                  ),
+                  
                 ],
               ),
             ),

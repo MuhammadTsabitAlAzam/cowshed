@@ -1,3 +1,4 @@
+import 'package:cowshed/Screen/AddUserScreen.dart';
 import 'package:cowshed/Screen/EditProfileScreen.dart';
 import 'package:cowshed/Screen/TentangScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
@@ -96,6 +97,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(builder: (context) => EditProfileScreen(user: user, token: token, img: user?.profileImg,),),
                 );
               },
+            ),
+            const SizedBox(height: 10,),
+            Visibility(
+              visible : role == "admin" ? true : false,
+              child: SuffixListTile(
+                prefixIcon: Icons.person_add,
+                label: 'Tambah User',
+                suffixIcon: Icons.chevron_right_outlined,
+                onPressed: (){
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: AddUserScreen(),
+                    withNavBar: false,
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 10,),
             SuffixListTile(
