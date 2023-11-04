@@ -1,3 +1,4 @@
+import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:flutter/material.dart';
 
 class CommonTextField extends StatelessWidget {
@@ -17,10 +18,10 @@ class CommonTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade800),
+          borderSide: BorderSide(color: AppColors.myColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade500)
+          borderSide: BorderSide(color: AppColors.myColor)
         )
       ),
       validator: (value) {

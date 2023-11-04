@@ -1,15 +1,42 @@
+import 'package:cowshed/Screen/LandingScreen.dart';
 import 'package:cowshed/Templates/Text/Text.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import '../Api/UserApi.dart';
 import '../Templates/Color/myColor.dart';
 
-class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
+class UserAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
+  _UserAppBarState createState() => _UserAppBarState();
+}
+
+class _UserAppBarState extends State<UserAppBar> {
+  String? name = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchName();
+  }
+
+  _fetchName() async {
+    try {
+      final userNameResponse = await ApiServiceUser().getUserName();
+      setState(() {
+        name = userNameResponse;
+      });
+    } catch (e) {
+      print('Gagal mengambil nama pengguna: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: AppBarText('Selamat Datang'),
+      title: AppBarText('Selamat Datang $name'),
       leading: Icon(Icons.person, color: Colors.white,),
       backgroundColor: AppColors.myColor,
       actions: [
@@ -65,6 +92,12 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+Future<void> logout() async {
+  await ApiServiceUser().deleteAccessToken();
+  await ApiServiceUser().deleteUserName();
+  await ApiServiceUser().deleteRole();
+}
+
 class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -74,7 +107,12 @@ class LogoutDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            logout();
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              screen: LandingScreen(),
+              withNavBar: false,
+            );
           },
           child: Text('Ya'),
         ),

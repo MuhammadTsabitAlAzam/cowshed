@@ -1,3 +1,4 @@
+import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:flutter/material.dart';
 
 class PhoneNumberField extends StatelessWidget {
@@ -27,10 +28,10 @@ class PhoneNumberField extends StatelessWidget {
         hintText: hintText,
         errorText: isPhoneNumberValid ? null : errorText,
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade800),
+          borderSide: BorderSide(color: AppColors.myColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade500),
+          borderSide: BorderSide(color: AppColors.myColor),
         ),
       ),
       validator: (value) {

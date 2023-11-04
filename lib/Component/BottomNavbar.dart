@@ -4,18 +4,17 @@ import 'package:cowshed/Screen/ScanScreen.dart';
 import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import '../Page/HomePage.dart';
-import '../Page/ProfilePage.dart';
 import '../Screen/HomeScreen.dart';
 
 class BottomNavbar extends StatelessWidget {
-  const BottomNavbar({Key? key}) : super(key: key);
+  final int? index;
+  BottomNavbar({Key? key, this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
-      controller: PersistentTabController(initialIndex: 0),
+      controller: PersistentTabController(initialIndex: index ?? 0),
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
@@ -35,7 +34,7 @@ class BottomNavbar extends StatelessWidget {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style1, // Ubah sesuai preferensi Anda
+      navBarStyle: NavBarStyle.style1,
     );
   }
 

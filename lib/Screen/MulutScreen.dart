@@ -3,7 +3,13 @@ import '../Component/UserAppbar.dart';
 import '../Page/MulutPage.dart';
 
 class MulutScreen extends StatefulWidget {
-  MulutScreen({Key? key}) : super(key: key);
+  final String id;
+  final double suhu;
+
+  MulutScreen({
+    required this.id,
+    required this.suhu
+  });
 
   @override
   State<MulutScreen> createState() => _MulutScreenState();
@@ -21,7 +27,7 @@ class _MulutScreenState extends State<MulutScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MulutPage(),
+              MulutPage(id: widget.id, suhu: widget.suhu,),
             ],
           ),
         ),

@@ -1,12 +1,15 @@
 import 'package:cowshed/Screen/MulutScreen.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
-import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:cowshed/Templates/Text/Text.dart';
 import 'package:cowshed/Templates/Textfield/ScanTextField.dart';
+import 'package:cowshed/Templates/Textfield/SuhuTextField.dart';
 import 'package:flutter/material.dart';
 
+import '../Templates/Dialog/CustomSnackbar.dart';
+
 class SuhuPage extends StatelessWidget {
-  SuhuPage({Key? key}) ;
+  final String id;
+  SuhuPage({Key? key, required this.id}) ;
 
   final TextEditingController _suhu =  TextEditingController();
 
@@ -25,24 +28,34 @@ class SuhuPage extends StatelessWidget {
               children: [
                 UnderlineThemedText('ID Sapi*'),
                 SizedBox(height: 10,),
-                CommonThemedText('XXXX'),
+                CommonThemedText(id),
                 SizedBox(height: 25,),
                 UnderlineThemedText('Suhu Sapi*'),
                 SizedBox(height: 10,),
-                ScanTextField(controller: _suhu)
+                SuhuTextField(controller: _suhu)
               ],
             ),
           ),
           SizedBox(height: 40,),
-          DefaultButton(label: 'Scan Mulut Sapi', onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MulutScreen()),
-              );
+          DefaultButton(label: 'Scan Mulut Sapi', onPressed: () {
+            final suhuText = _suhu.text;
+
+            if (suhuText.isNotEmpty) {
+              try {
+                double suhu = double.parse(suhuText);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MulutScreen(id: id, suhu: suhu)),
+                );
+              } catch (e) {
+                CustomSnackbar.instance.show(context, 'Suhu yang dimasukkan tidak valid');
+              }
+            } else {
+              CustomSnackbar.instance.show(context, 'Harap isi Suhu');
+            }
           })
         ],
       ),
-
     );
   }
 }

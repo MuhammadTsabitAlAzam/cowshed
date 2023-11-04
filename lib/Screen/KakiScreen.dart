@@ -1,13 +1,17 @@
 import 'dart:io';
-
 import 'package:cowshed/Page/KakiPage.dart';
 import 'package:flutter/material.dart';
 import '../Component/UserAppbar.dart';
-import '../Page/MulutPage.dart';
 
 class KakiScreen extends StatefulWidget {
   final File? mulut;
-  KakiScreen({Key? key, this.mulut}) : super(key: key);
+  final String id;
+  final double suhu;
+  KakiScreen({
+    this.mulut,
+    required this.id,
+    required this.suhu
+  });
 
   @override
   State<KakiScreen> createState() => _KakiScreenState();
@@ -25,7 +29,7 @@ class _KakiScreenState extends State<KakiScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              KakiPage(mulut: widget.mulut,),
+              KakiPage(mulut: widget.mulut, id: widget.id, suhu: widget.suhu,),
             ],
           ),
         ),

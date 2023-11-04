@@ -7,17 +7,17 @@ class StatusSapi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (status == 'Sehat') {
+    if (status == 'sehat') {
       return Container(
         height: 20,
         width: 50,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(width: 1, color: Colors.lightGreenAccent)),
+            border: Border.all(width: 1, color: Colors.green)),
         child: Center(
           child: Text(
             'Sehat',
-            style: TextStyle(color: Colors.lightGreenAccent, fontSize: 10),
+            style: TextStyle(color: Colors.green, fontSize: 10),
           ),
         ),
       );

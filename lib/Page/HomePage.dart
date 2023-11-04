@@ -1,9 +1,12 @@
+import 'package:cowshed/Component/BottomNavbar.dart';
 import 'package:cowshed/Templates/Button/DefaultButton.dart';
 import 'package:cowshed/Templates/Text/Text.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) ;
+  final PersistentTabController? controller;
+  HomePage({Key? key, this.controller}) ;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class HomePage extends StatelessWidget {
       child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 35, horizontal: 25),
+              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -21,11 +24,18 @@ class HomePage extends StatelessWidget {
                     width: 200,
                   ),
                   SizedBox(height: 50,),
-                  DefaultButton(label: 'Scan Sapi', onPressed: (){}),
+                  DefaultButton(label: 'Scan Sapi', onPressed: () {
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      screen: BottomNavbar(index: 1,),
+                      withNavBar: false,
+                    );
+                    }
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(height: 10,),
             Align(
               alignment: Alignment.centerLeft,
               child: Row(
@@ -38,10 +48,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15,),
-            Container(
-              height: 300,
-              color: Colors.grey.shade300,
-            )
           ],
         ),
     );

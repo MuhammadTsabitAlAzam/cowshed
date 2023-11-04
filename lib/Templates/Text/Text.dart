@@ -6,7 +6,7 @@ Widget TitleText(String title) => Text(
       style: TextStyle(
           // fontFamily: '',
           fontSize: 30,
-          color: Colors.cyan[800],
+          color: AppColors.myColor,
           fontWeight: FontWeight.bold),
     );
 
@@ -47,6 +47,15 @@ Widget BoldThemedText(String title) => Text(
       fontWeight: FontWeight.w900),
 );
 
+Widget MediumThemedText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 18,
+      color: AppColors.myColor,
+      fontWeight: FontWeight.w600),
+);
+
 Widget CommonThemedText(String title) => Text(
       title,
       style: TextStyle(
@@ -84,8 +93,8 @@ Widget AppBarText(String title) => Text(
   title,
   style: TextStyle(
     // fontFamily: '',
-      fontSize: 20,
-      color: Colors.white, fontWeight: FontWeight.w400),
+      fontSize: 16,
+      color: Colors.white, fontWeight: FontWeight.w600),
 );
 
 Widget UnderlineThemedText(String title) => Container(
@@ -102,4 +111,44 @@ Widget UnderlineThemedText(String title) => Container(
         fontWeight: FontWeight.w500,
     ),
   ),
+);
+
+Widget TitleContainerText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 12,
+      color: Colors.white, fontWeight: FontWeight.bold),
+);
+
+Widget ContentContainerText(String title, Color colors) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 14,
+      color: colors, fontWeight: FontWeight.bold),
+);
+
+Widget Content2ContainerText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 7,
+      color: Colors.greenAccent.shade700, fontWeight: FontWeight.bold),
+);
+
+Widget SubTitleRedText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 10,
+      color: Colors.red, fontWeight: FontWeight.bold),
+);
+
+Widget SubTitleText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 10,
+      color: Colors.grey),
 );

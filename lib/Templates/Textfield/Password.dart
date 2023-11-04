@@ -1,3 +1,4 @@
+import 'package:cowshed/Templates/Color/myColor.dart';
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
@@ -24,10 +25,10 @@ class _PasswordFieldState extends State<PasswordField> {
       controller: widget.controller,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade800),
+          borderSide: BorderSide(color: AppColors.myColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade500),
+          borderSide: BorderSide(color: AppColors.myColor),
         ),
         labelText: widget.label ?? 'Password*',
         suffixIcon: IconButton(

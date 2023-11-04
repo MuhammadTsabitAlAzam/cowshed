@@ -1,15 +1,19 @@
 import 'dart:io';
-
 import 'package:cowshed/Page/DataSapiPage.dart';
-import 'package:cowshed/Page/KakiPage.dart';
 import 'package:flutter/material.dart';
 import '../Component/UserAppbar.dart';
-import '../Page/MulutPage.dart';
 
 class DataSapiScreen extends StatefulWidget {
   final File? mulut;
   final File? kaki;
-  DataSapiScreen({Key? key, this.mulut, this.kaki}) : super(key: key);
+  final String id;
+  final double suhu;
+  DataSapiScreen({
+    this.mulut,
+    this.kaki,
+    required this.id,
+    required this.suhu
+  });
 
   @override
   State<DataSapiScreen> createState() => _DataSapiScreenState();
@@ -27,7 +31,7 @@ class _DataSapiScreenState extends State<DataSapiScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              DataSapiPage(mulut: widget.mulut, kaki: widget.kaki,),
+              DataSapiPage(mulut: widget.mulut, kaki: widget.kaki, id: widget.id, suhu: widget.suhu,),
             ],
           ),
         ),

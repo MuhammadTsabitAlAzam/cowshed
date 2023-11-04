@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class DefaultButton extends StatelessWidget {
   final String label;
   final Function() onPressed;
-  DefaultButton({required this.label, required this.onPressed}) ;
+  final Widget? child;
+  DefaultButton({required this.label, required this.onPressed, this.child}) ;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class DefaultButton extends StatelessWidget {
       ),
       child: ElevatedButton(
           onPressed: onPressed,
-          child: Text(label, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+          child: child ?? Text(label, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
           onPrimary: Colors.transparent,
