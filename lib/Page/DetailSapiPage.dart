@@ -121,7 +121,7 @@ class _DetailSapiPageState extends State<DetailSapiPage> {
       onPressed: () {
         _launchContactOptions();
       },
-      label: role == 'Puskeswan' ? 'Hubungi Pasien' : 'Hubungi Puskeswan',
+      label: role == 'puskeswan' ? 'Hubungi Owner' : 'Hubungi Puskeswan',
     );
   }
 

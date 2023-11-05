@@ -65,7 +65,15 @@ class _DaftarUserPageState extends State<DaftarUserPage> {
           children: [
             Center(child: BoldThemedText('Daftar Users')),
             SizedBox(height: 30,),
-            _createDataTable(),
+            Row(
+              children: [
+                Expanded(
+                  child: FittedBox(
+                      child: _createDataTable()
+                  ),
+                ),
+              ],
+            ),
             Divider(),
             SizedBox(height: 30,),
             _createPaginationButton(),
@@ -141,29 +149,19 @@ class _DaftarUserPageState extends State<DaftarUserPage> {
       final usersData = entry.value;
       return DataRow(
         cells: [
-          DataCell(Text(usersData.username)),
-          DataCell(Text(usersData.name)),
+          DataCell(Text(usersData.username, overflow: TextOverflow.ellipsis,)),
+          DataCell(Text(usersData.name, overflow: TextOverflow.ellipsis,)),
           DataCell(Text(usersData.role)),
           DataCell(
-            PopupMenuButton<String>(
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem(
-                  value: 'delete',
-                  child: ListTile(
-                    leading: CommonThemedText('Delete'),
-                    trailing: Icon(Icons.delete, color: Colors.red,),
-                  ),
-                ),
-              ],
-              onSelected: (String action) async {
-                 if (action == 'delete') {
+              TextButton(
+                onPressed: () async {
                   bool? _delete = await ConfirmationMessage.showConfirmationDialog(
-                      context,
-                      'Delete',
-                      'Apakah Anda Yakin Ingin Menghapus Data Ini ?',
-                      'Ya'
+                    context,
+                    'Delete',
+                    'Apakah Anda Yakin Ingin Menghapus Data Ini ?',
+                    'Ya',
                   );
-                  if (_delete == true){
+                  if (_delete == true) {
                     try {
                       final response = await ApiServiceAdmin().deleteUsersData(usersData.id);
                       if (response.statusCode == 204) {
@@ -193,11 +191,20 @@ class _DaftarUserPageState extends State<DaftarUserPage> {
                       }
                     } catch (e) {
                       // Terjadi kesalahan dalam proses penghapusan
-                    };
+                    }
                   }
-                }
-              },
-            ),
+                },
+                child: Row(
+                  children: [
+                    Text('Delete', style: TextStyle(color: Colors.red, fontSize: 12)),
+                    Container(
+                      height: 20,
+                        width: 20,
+                        child: Icon(Icons.delete, color: Colors.red,)
+                    )
+                  ],
+                ),
+              )
           ),
         ],
       );
