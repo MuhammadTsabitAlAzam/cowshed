@@ -190,7 +190,7 @@ class _DetailSapiPageState extends State<DetailSapiPage> {
   }
 
   void _launchContactOptions() async {
-    String phoneNumber = role == 'user' ? cowDetails!.owner.noTelp : cowDetails!.puskeswan.noTelp;
+    String phoneNumber = role == 'puskeswan' ? cowDetails!.owner.noTelp : cowDetails!.puskeswan.noTelp;
     final String telUrl = 'tel://$phoneNumber';
     final String whatsappUrl = 'https://wa.me/$phoneNumber';
 

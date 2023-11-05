@@ -83,6 +83,11 @@ class _DaftarUserPageState extends State<DaftarUserPage> {
     return [
       DataColumn(
           label: Container(
+          height: 55,
+          child: CommonThemedText('Username')
+      )),
+      DataColumn(
+          label: Container(
               height: 55,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -109,11 +114,6 @@ class _DaftarUserPageState extends State<DaftarUserPage> {
               )
           )
       ),
-      DataColumn(
-          label: Container(
-          height: 55,
-          child: CommonThemedText('Username')
-      )),
       DataColumn(
           label: Container(
               height: 55,
