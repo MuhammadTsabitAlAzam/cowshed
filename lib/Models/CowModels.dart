@@ -84,6 +84,7 @@ class MetaData {
 class CowApiResponse {
   final String id;
   final String idSapi;
+  final String status_suhu;
   final String mulut;
   final String kaki;
   final String status;
@@ -92,6 +93,7 @@ class CowApiResponse {
   CowApiResponse({
     required this.id,
     required this.idSapi,
+    required this.status_suhu,
     required this.mulut,
     required this.kaki,
     required this.status,
@@ -102,6 +104,7 @@ class CowApiResponse {
     return CowApiResponse(
       id: json['id'],
       idSapi: json['id_sapi'],
+      status_suhu: json['status_suhu'],
       mulut: json['mulut'],
       kaki: json['kaki'],
       status: json['status'],
@@ -114,9 +117,10 @@ class CowDetails {
   final String id;
   final String idSapi;
   final String status;
+  final String status_suhu;
   final String kaki;
   final String mulut;
-  final int suhu;
+  final num suhu;
   final String kakiImg;
   final String mulutImg;
   final DateTime createdAt;
@@ -127,6 +131,7 @@ class CowDetails {
     required this.id,
     required this.idSapi,
     required this.status,
+    required this.status_suhu,
     required this.kaki,
     required this.mulut,
     required this.suhu,
@@ -142,6 +147,7 @@ class CowDetails {
       id: json['id'],
       idSapi: json['id_sapi'],
       status: json['status'],
+      status_suhu: json['status_suhu'],
       kaki: json['kaki'],
       mulut: json['mulut'],
       suhu: json['suhu'],

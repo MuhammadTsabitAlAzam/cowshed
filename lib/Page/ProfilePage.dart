@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../Api/UserApi.dart';
 import '../Models/UserModels.dart';
+import '../Screen/EdukasiScreen.dart';
 import '../Screen/LandingScreen.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -140,6 +141,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
                   screen: TentangScreen(),
+                  withNavBar: false,
+                );
+              },
+            ),const SizedBox(height: 10,),
+            SuffixListTile(
+              prefixIcon: Icons.book,
+              label: 'Edukasi',
+              suffixIcon: Icons.chevron_right_outlined,
+              onPressed: (){
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: EdukasiScreen(),
                   withNavBar: false,
                 );
               },

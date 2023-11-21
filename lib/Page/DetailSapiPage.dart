@@ -81,6 +81,7 @@ class _DetailSapiPageState extends State<DetailSapiPage> {
                   _buildTable("ID Sapi", CommonThemedText(cowDetails!.idSapi)),
                   _buildTable("Suhu", CommonThemedText("${cowDetails!.suhu}°C")),
                   _buildTable("Tanggal", CommonThemedText(_formatDate(cowDetails!.createdAt))),
+                  _buildTable("Status Suhu", StatusSapi(status: cowDetails!.status_suhu)),
                   _buildTable("Kondisi Kaki", StatusSapi(status: cowDetails!.kaki)),
                   _buildTable("Kondisi Mulut", StatusSapi(status: cowDetails!.mulut)),
                   _buildTable("Status", StatusSapi(status: cowDetails!.status)),

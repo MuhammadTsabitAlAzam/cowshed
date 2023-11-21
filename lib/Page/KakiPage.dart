@@ -26,65 +26,73 @@ class _KakiPageState extends State<KakiPage> {
   File? picture;
   bool _isPictureTaken = false;
   final double previewAspectRatio = 0.7;
-  late CameraController _cameraController;
-  bool _isCameraInitialized = false;
 
-  @override
-  void initState() {
-    super.initState();
-    initCamera();
-  }
-
-  void _pickImage() async {
-    if (_isCameraInitialized) {
-      try {
-        await _cameraController.setFlashMode(FlashMode.off);
-        final XFile? pickedImage = await _cameraController.takePicture();
-        if (pickedImage != null) {
-          if (_isPictureTaken) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialog(
-                  title: 'Konfirmasi',
-                  content: 'Apakah Anda ingin menghapus foto sebelumnya?',
-                  onPressed: () {
-                    if (picture != null) {
-                      picture!.delete();
-                    }
-                    setState(() {
-                      picture = null;
-                      _isPictureTaken = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                );
-              },
-            );
-          } else {
+  Future<void> _showConfirmationDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: 'Konfirmasi',
+          content: 'Apakah Anda ingin mengganti foto?',
+          onPressed: () async {
+            if (picture != null) {
+              picture!.delete();
+              _showImagePickerOptions();
+            }
             setState(() {
-              picture = File(pickedImage.path);
-              _isPictureTaken = true;
+              picture = null;
+              _isPictureTaken = false;
             });
-          }
-        }
-      } catch (e) {
-        print("Error taking picture: $e");
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _captureImage(ImageSource source) async {
+    try {
+      final XFile? pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+          setState(() {
+            picture = File(pickedImage.path);
+            _isPictureTaken = true;
+          });
       }
+    } catch (e) {
+      print("Error taking picture: $e");
     }
   }
 
-  Future<void> initCamera() async {
-    final cameras = await availableCameras();
-    if (cameras.isNotEmpty) {
-      _cameraController = CameraController(cameras[0], ResolutionPreset.high);
-      await _cameraController.initialize();
-      if (mounted) {
-        setState(() {
-          _isCameraInitialized = true;
-        });
-      }
-    }
+  Future<void> _showImagePickerOptions() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Camera'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _captureImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _captureImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -97,32 +105,22 @@ class _KakiPageState extends State<KakiPage> {
           children: [
             BoldThemedText('DATA SAPI'),
             SizedBox(height: 30,),
-            if (_isCameraInitialized && !_isPictureTaken)
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 0.8 / previewAspectRatio,
-                    child: ClipRect(
-                      child: Transform.scale(
-                        scale: _cameraController.value.aspectRatio / previewAspectRatio,
-                        child: Center(
-                          child: CameraPreview(_cameraController),
-                        ),
-                      ),
-                    ),
+            if (picture == null)
+              Container(
+                height: _width - 150,
+                width: _width - 110,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black
                   ),
-                  Container(
-                    height: _width-150,
-                    width: _width-110,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.red, width: 2)
-                    ),
-                  )
-                ],
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Text("Tidak Ada gambar"),
+                ),
               )
-            else if (picture != null)
+            else
               Image.file(
                 picture!,
                 width: 300,
@@ -131,7 +129,7 @@ class _KakiPageState extends State<KakiPage> {
               ),
             SizedBox(height: 25,),
             DefaultButton(
-              onPressed: _pickImage,
+              onPressed: _isPictureTaken? _showConfirmationDialog :_showImagePickerOptions,
               label: 'Ambil Gambar',
             ),
             SizedBox(height: 20,),

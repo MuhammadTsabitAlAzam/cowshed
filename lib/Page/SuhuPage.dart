@@ -11,7 +11,7 @@ class SuhuPage extends StatelessWidget {
   final String id;
   SuhuPage({Key? key, required this.id}) ;
 
-  final TextEditingController _suhu =  TextEditingController();
+  static TextEditingController _suhu =  TextEditingController();
 
   @override
   Widget build(BuildContext context) {

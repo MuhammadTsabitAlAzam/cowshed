@@ -98,6 +98,7 @@ class _DataSapiPageState extends State<DataSapiPage> {
               title: 'Berhasil Mengirim Data',
               id_sapi: cowApiResponse.idSapi,
               mulut: cowApiResponse.mulut,
+              status_suhu: cowApiResponse.status_suhu,
               kaki: cowApiResponse.kaki,
               status: cowApiResponse.status,
               suhu: cowApiResponse.suhu,

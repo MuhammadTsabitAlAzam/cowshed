@@ -19,18 +19,20 @@ class SuhuTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-            hintText: 'ex. 1234',
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey)
-            ),
+          hintText: 'ex. 1234',
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
           suffixText: '°C',
           suffixStyle: TextStyle(color: AppColors.myColor),
           counterText: '',
         ),
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'^(0|[0-9]{0,4})(\.\d{0,2})?'))
+        ],
         validator: (value) {
           if (isRequired && (value == null || value.isEmpty)) {
             return 'Harap isi data';

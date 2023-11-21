@@ -89,6 +89,32 @@ Widget MiniBlackText(String title) => Text(
       color: Colors.black),
 );
 
+Widget BoldBlackText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 17,
+      fontWeight: FontWeight.bold,
+      color: Colors.black),
+);
+
+Widget NormalBlackText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+      fontSize: 14,
+      color: Colors.black),
+);
+
+Widget NormalBoldBlackText(String title) => Text(
+  title,
+  style: TextStyle(
+    // fontFamily: '',
+    fontWeight: FontWeight.bold,
+      fontSize: 14,
+      color: Colors.black),
+);
+
 Widget AppBarText(String title) => Text(
   title,
   style: TextStyle(

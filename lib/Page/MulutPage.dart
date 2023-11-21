@@ -24,67 +24,75 @@ class _MulutPageState extends State<MulutPage> {
   bool _isPictureTaken = false;
   final double previewAspectRatio = 0.7;
   late CameraController _cameraController;
-  bool _isCameraInitialized = false;
 
-  void _pickImage() async {
-    if (_isCameraInitialized) {
-      try {
-        await _cameraController.setFlashMode(FlashMode.off);
-        final XFile? pickedImage = await _cameraController.takePicture();
-        if (pickedImage != null) {
-          if (_isPictureTaken) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialog(
-                  title: 'Konfirmasi',
-                  content: 'Apakah Anda ingin menghapus foto sebelumnya?',
-                  onPressed: () {
-                    if (picture != null) {
-                      picture!.delete();
-                    }
-                    setState(() {
-                      picture = null;
-                      _isPictureTaken = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                );
-              },
-            );
-          } else {
+  Future<void> _showConfirmationDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: 'Konfirmasi',
+          content: 'Apakah Anda ingin mengganti foto?',
+          onPressed: () async {
+            if (picture != null) {
+              picture!.delete();
+              _showImagePickerOptions();
+            }
             setState(() {
-              picture = File(pickedImage.path);
-              _isPictureTaken = true;
+              picture = null;
+              _isPictureTaken = false;
             });
-          }
-        }
-      } catch (e) {
-        print("Error taking picture: $e");
-      }
-    }
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
-
-
-  Future<void> initCamera() async {
-    final cameras = await availableCameras();
-    if (cameras.isNotEmpty) {
-      _cameraController = CameraController(cameras[0], ResolutionPreset.high);
-      await _cameraController.initialize();
-      if (mounted) {
+  Future<void> _captureImage(ImageSource source) async {
+    try {
+      final XFile? pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
         setState(() {
-          _isCameraInitialized = true;
+          picture = File(pickedImage.path);
+          _isPictureTaken = true;
         });
       }
+    } catch (e) {
+      print("Error taking picture: $e");
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initCamera();
+  Future<void> _showImagePickerOptions() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Camera'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _captureImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _captureImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
+
 
   @override
   void dispose() {
@@ -101,40 +109,30 @@ class _MulutPageState extends State<MulutPage> {
         children: [
           BoldThemedText('DATA SAPI'),
           SizedBox(height: 30),
-              if (_isCameraInitialized && _isPictureTaken==false)
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 0.8 / previewAspectRatio,
-                      child: ClipRect(
-                        child: Transform.scale(
-                          scale: _cameraController.value.aspectRatio / previewAspectRatio,
-                          child: Center(
-                            child: CameraPreview(_cameraController),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: _width-150,
-                      width: _width-110,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.red, width: 2)
-                      ),
-                    )
-                  ],
-                )
-              else if (picture != null)
-                Image.file(
-                  picture!,
-                  width: 300,
-                  height: 300,
-                  fit: BoxFit.cover,
+          if (picture == null)
+            Container(
+              height: _width - 150,
+              width: _width - 110,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1,
+                    color: Colors.black
                 ),
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Text("Tidak Ada gambar"),
+              ),
+            )
+          else
+            Image.file(
+              picture!,
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
+            ),
           SizedBox(height: 20),
-          DefaultButton(label: 'Ambil Gambar', onPressed: _pickImage),
+          DefaultButton(label: 'Ambil Gambar', onPressed: _isPictureTaken? _showConfirmationDialog :_showImagePickerOptions,),
           SizedBox(height: 20),
           DefaultButton(
             label: 'Scan Kaki Sapi',

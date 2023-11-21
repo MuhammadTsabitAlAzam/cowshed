@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class SendCowDialog extends StatelessWidget {
   final String title;
   final String id_sapi;
+  final String status_suhu;
   final String mulut;
   final String kaki;
   final String status;
@@ -17,6 +18,7 @@ class SendCowDialog extends StatelessWidget {
     required this.title,
     required this.id_sapi,
     required this.status,
+    required this.status_suhu,
     required this.suhu,
     required this.onPressed,
     required this.mulut,
@@ -37,6 +39,18 @@ class SendCowDialog extends StatelessWidget {
             CommonThemedText('ID Sapi: $id_sapi'),
             SizedBox(height: 10,),
             CommonThemedText('Suhu: $suhu °C'),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonThemedText('Suhu'),
+                Spacer(),
+                CommonThemedText(': '),
+                Spacer(),
+                StatusSapiBesar(status: status_suhu)
+              ],
+            ),
             SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
